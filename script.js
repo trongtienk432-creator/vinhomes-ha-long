@@ -39,6 +39,14 @@ if (form && status) {
   }));
 }
 
+const getPopupSubmitLabel = (ctaLabel) => {
+  const label = ctaLabel.toLocaleLowerCase('vi').normalize('NFC');
+  if (/thăm quan|tham quan|thực địa/.test(label)) return 'Đăng ký thăm quan dự án';
+  if (/bảng giá|bảng hàng|phiếu tính giá/.test(label)) return 'Nhận bảng giá qua Zalo';
+  if (/tài liệu|brochure|bản đồ|sơ đồ|mặt bằng|hồ sơ|chính sách/.test(label)) return 'Nhận tài liệu qua Zalo';
+  return 'Đăng ký tư vấn ngay';
+};
+
 const setupConversionPopup = () => {
   const ctaLinks = [...document.querySelectorAll('a[href="#dang-ky"]')].filter((link) => link.closest('.site-footer') === null);
   if (!ctaLinks.length) return;
@@ -56,9 +64,9 @@ const setupConversionPopup = () => {
         <div class="popup-brand">VINHOMES GLOBAL GATE <span>HẠ LONG</span></div>
         <p class="section-kicker"><span></span>VỊNH THIÊN ĐƯỜNG · ĐỢT 1</p>
         <h2 id="conversion-popup-title">Nhận bảng giá & tư vấn dòng tiền.</h2>
-        <p id="conversion-popup-context">Để lại thông tin, đội ngũ tư vấn sẽ hỗ trợ theo nhu cầu bạn đang quan tâm.</p>
-        <ul class="popup-benefits"><li>Bảng giá theo mã căn</li><li>Phương án tài chính</li><li>Tư vấn sản phẩm phù hợp</li></ul>
-        <p class="conversion-popup-note">Giá bán và chính sách trên trang mang tính tham khảo/dự kiến; thông tin chính thức áp dụng theo văn bản niêm yết của Chủ đầu tư tại từng thời điểm.</p>
+        <p id="conversion-popup-context">Để lại thông tin để MICC hỗ trợ Anh/Chị</p>
+        <ul class="popup-benefits"><li>Bảng giá + phiếu tính giá chính xác từng căn</li><li>Brochure, tài liệu giới thiệu dự án</li><li>Chính sách bán hàng mới nhất tháng 9</li><li>Hồ sơ pháp lý dự án — bản scan đầy đủ</li></ul>
+        <details class="popup-disclaimer"><summary>Lưu ý về thông tin dự án</summary><p class="conversion-popup-note">Giá bán và chính sách trên trang mang tính tham khảo/dự kiến; thông tin chính thức áp dụng theo văn bản niêm yết của Chủ đầu tư tại từng thời điểm.</p></details>
         <a class="conversion-popup-hotline" href="tel:0862608234">Gọi hotline 086 260 8234</a>
       </div>
       <form class="conversion-popup-form" aria-describedby="conversion-popup-context" novalidate>
@@ -68,16 +76,19 @@ const setupConversionPopup = () => {
         <label for="popup-phone">Số điện thoại Zalo / nhận thông tin <span aria-hidden="true">*</span></label>
         <input id="popup-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="Nhập số điện thoại" required maxlength="20" aria-describedby="popup-phone-error">
         <p class="field-error" id="popup-phone-error" hidden></p>
-        <label for="popup-interest">Nội dung quan tâm</label>
-        <select id="popup-interest" name="interest">
-          <option>Nhận bảng giá mới nhất</option>
-          <option>Tư vấn dòng tiền</option>
-          <option>Nhận brochure & bản đồ</option>
-          <option>Nhận mặt bằng sản phẩm</option>
-          <option>Đặt lịch xem thực địa</option>
+        <label for="popup-product">Sản phẩm quan tâm</label>
+        <select id="popup-product" name="product">
+          <option value="">Chọn sản phẩm</option>
+          <option>Liền kề</option>
+          <option>Song lập</option>
+          <option>Biệt thự đơn lập</option>
+          <option>Shophouse</option>
+          <option>Chung cư</option>
+          <option>Dinh thự</option>
+          <option>Tìm hiểu tổng quan</option>
         </select>
         <label class="form-consent"><input type="checkbox" name="consent" required aria-describedby="popup-consent-error"><span>Tôi đồng ý để MICC sử dụng thông tin trên nhằm liên hệ tư vấn qua điện thoại/Zalo theo <a href="https://chungcumasterioceancity.com/chinh-sach-bao-mat.html" target="_blank" rel="noopener">Chính sách bảo mật</a>.</span></label><p class="field-error" id="popup-consent-error" hidden></p>
-        <button type="submit">ĐĂNG KÝ NHẬN TƯ VẤN <span aria-hidden="true">↗</span></button>
+        <button type="submit">Đăng ký tư vấn ngay <span aria-hidden="true">↗</span></button>
         <p class="form-status" role="status" hidden></p>
       </form>
     </div>`;
@@ -88,7 +99,8 @@ const setupConversionPopup = () => {
   const popupStatus = popup.querySelector('.form-status');
   const popupFields = [popupForm.elements.name, popupForm.elements.phone];
   const popupContext = popup.querySelector('#conversion-popup-context');
-  const popupInterest = popupForm.elements.interest;
+  const popupTitle = popup.querySelector('#conversion-popup-title');
+  const popupSubmitText = popupForm.querySelector('button[type=submit]').firstChild;
   let lastFocusedElement;
 
   const validatePopupField = (field) => {
@@ -101,17 +113,21 @@ const setupConversionPopup = () => {
     return valid;
   };
   const openPopup = (sourceLink) => {
-    const label = sourceLink.textContent.replace(/\s+/g, ' ').trim();
+    const labelCopy = sourceLink.cloneNode(true);
+    labelCopy.querySelectorAll('[aria-hidden="true"], small').forEach(node => node.remove());
+    const label = labelCopy.textContent.replace(/\s+/g, ' ').trim();
     lastFocusedElement = document.activeElement;
-    popupContext.textContent = label ? `Bạn đang chọn: ${label}. Để lại thông tin, đội ngũ tư vấn sẽ hỗ trợ đúng nội dung này.` : 'Để lại thông tin, đội ngũ tư vấn sẽ hỗ trợ theo nhu cầu bạn đang quan tâm.';
-    const lowerLabel = label.toLowerCase();
-    if (lowerLabel.includes('dòng tiền')) popupInterest.value = 'Tư vấn dòng tiền';
-    else if (lowerLabel.includes('brochure') || lowerLabel.includes('bản đồ')) popupInterest.value = 'Nhận brochure & bản đồ';
-    else if (lowerLabel.includes('mặt bằng')) popupInterest.value = 'Nhận mặt bằng sản phẩm';
-    else popupInterest.value = 'Nhận bảng giá mới nhất';
+    popupTitle.textContent = label || 'Đăng ký nhận tư vấn';
+    popupForm.dataset.cta = label;
+    popupSubmitText.textContent = `${getPopupSubmitLabel(label)} `;
+    popupContext.textContent = 'Để lại thông tin để MICC hỗ trợ Anh/Chị';
+    popupStatus.hidden = true;
     popup.hidden = false;
     document.body.classList.add('has-open-conversion');
-    window.requestAnimationFrame(() => popupForm.elements.name.focus());
+    window.requestAnimationFrame(() => {
+      closeButton.focus({ preventScroll: true });
+      popup.querySelector('.conversion-popup-panel').scrollTop = 0;
+    });
   };
   const closePopup = () => {
     popup.hidden = true;
@@ -478,7 +494,11 @@ setupGallery({
     ['assets/images/tien do du an/2-tien-do-du-an-thang-9.jpg', 'Ảnh tiến độ dự án tháng 9 · góc nhìn 02'],
     ['assets/images/tien do du an/3-tien-do-du-an-thang-9.jpg', 'Ảnh tiến độ dự án tháng 9 · góc nhìn 03'],
     ['assets/images/tien do du an/4-tien-do-du-an-thang-9.jpg', 'Ảnh tiến độ dự án tháng 9 · góc nhìn 04'],
-    ['assets/images/tien do du an/5-tien-do-du-an-thang-9.jpg', 'Ảnh tiến độ dự án tháng 9 · góc nhìn 05']
+    ['assets/images/tien do du an/5-tien-do-du-an-thang-9.jpg', 'Ảnh tiến độ dự án tháng 9 · góc nhìn 05'],
+    ['assets/images/tien do du an/6-tien-do-du-an-thang-9.jpg', 'Ảnh tiến độ dự án tháng 9 · góc nhìn 06'],
+    ['assets/images/tien do du an/7-tien-do-du-an-thang-9.jpg', 'Ảnh tiến độ dự án tháng 9 · góc nhìn 07'],
+    ['assets/images/tien do du an/8-tien-do-du-an-thang-9.jpg', 'Ảnh tiến độ dự án tháng 9 · góc nhìn 08'],
+    ['assets/images/tien do du an/9-tien-do-du-an-thang-9.jpg', 'Ảnh tiến độ dự án tháng 9 · góc nhìn 09']
   ]
 });
 

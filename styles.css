@@ -853,3 +853,52 @@ body{padding-top:var(--header-height)}
   .mobile-contact-options{border-radius:10px;border-color:#d6bc7b;box-shadow:0 10px 35px #032f3340}
   .mobile-contact summary:focus-visible,.mobile-conversion>a:focus-visible{outline:2px solid #f4dfac;outline-offset:3px}
 }
+
+/* Full amenity map before the experience chapters. */
+.amenities .amenities-map{margin:0 0 var(--space-group);background:transparent}
+.amenities-map figcaption{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 20px}
+
+/* Compact popup keeps the form close to its CTA-specific heading. */
+.conversion-popup-copy{padding:30px}
+.popup-brand{margin-bottom:24px}
+.conversion-popup-copy h2{font-size:32px;margin:12px 0;line-height:1.2}
+.conversion-popup-copy>p:not(.section-kicker){font-size:14px;margin-bottom:14px}
+.popup-benefits{gap:10px;margin:18px 0;line-height:1.5}
+.popup-benefits li{position:relative;padding-left:20px}
+.popup-benefits li::before{position:absolute;left:0;margin:0}
+.popup-disclaimer{font-size:12px;color:#d9e6df;line-height:1.5}
+.popup-disclaimer summary{cursor:pointer;padding:8px 0;text-decoration:underline;text-underline-offset:3px}
+.popup-disclaimer .conversion-popup-note{margin:4px 0 12px;padding:0;border:0}
+.conversion-popup-form{padding:54px 28px 28px}
+.conversion-popup-form>label{margin-top:12px;margin-bottom:6px}
+.conversion-popup-form .form-consent{margin-top:16px;font-size:12px;line-height:1.5}
+.conversion-popup-form button[type=submit]{margin-top:16px;min-height:50px}
+@media(max-width:760px){
+  .conversion-popup-copy{padding:20px 20px 12px}
+  .conversion-popup-copy .popup-brand,.conversion-popup-copy .section-kicker,.conversion-popup-copy #conversion-popup-context,.conversion-popup-hotline{display:none}
+  .conversion-popup-copy h2{font-size:23px;line-height:1.25;margin:0 52px 12px 0}
+  .popup-benefits{font-size:12px;line-height:1.45;gap:5px;margin:0 0 6px}
+  .popup-disclaimer{font-size:11px}
+  .popup-disclaimer summary{padding:5px 0}
+  .conversion-popup-form{padding:14px 20px 20px}
+  .conversion-popup-form>label{font-size:13px;margin:10px 0 4px}
+  .conversion-popup-form>label:first-child{margin-top:0}
+  .conversion-popup-form input:not([type=checkbox]),.conversion-popup-form select{min-height:44px;padding:10px;font-size:16px}
+  .conversion-popup-form .form-consent{font-size:12px;line-height:1.45;margin-top:12px}
+  .conversion-popup-form button[type=submit]{margin-top:12px;min-height:46px;padding:10px 14px}
+}
+
+/* Final visual QA: retain readable navigation and balanced mobile headlines. */
+@media(max-width:600px){
+  .hero h1{font-size:clamp(32px,9.2vw,40px);text-wrap:balance}
+}
+@media(max-width:380px){
+  .site-header{padding-inline:12px;gap:8px}
+  .site-header .brand{gap:6px}
+  .site-header .brand img{width:28px}
+  .site-header .brand-name{font-size:14px;letter-spacing:0}
+  .site-header .brand-parent{font-size:8px;letter-spacing:2px}
+  .site-header .brand-location{font-size:8px;letter-spacing:3px}
+  .site-header .header-hotline{flex-shrink:0}
+  .site-header .menu-toggle{min-width:70px;flex-shrink:0;padding-inline:7px;gap:6px}
+}
