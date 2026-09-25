@@ -91,6 +91,37 @@ if (form && status) {
   }));
 }
 
+// Mid-page price request uses the same verified submission flow.
+const priceRequestForm = document.querySelector('#price-request-form');
+if (priceRequestForm) {
+  const message = priceRequestForm.querySelector('.form-status');
+  const fields = [priceRequestForm.elements.name, priceRequestForm.elements.phone];
+  const validate = field => {
+    const value = field.value.trim();
+    const digits = value.replace(/\D/g, '');
+    const valid = field.name === 'name' ? value.length >= 2 : /^[+0-9 ()-]+$/.test(value) && digits.length >= 9 && digits.length <= 15;
+    const error = document.getElementById(field.getAttribute('aria-describedby'));
+    field.setAttribute('aria-invalid', String(!valid));
+    error.hidden = valid;
+    error.textContent = valid ? '' : field.name === 'name' ? 'Vui lòng nhập họ tên ít nhất 2 ký tự.' : 'Vui lòng nhập số điện thoại hợp lệ (9–15 chữ số).';
+    return valid;
+  };
+  priceRequestForm.addEventListener('submit', event => {
+    event.preventDefault();
+    if (priceRequestForm.getAttribute('aria-busy') === 'true') return;
+    const results = fields.map(validate);
+    const consentValid = validateConsent(priceRequestForm);
+    const invalid = results.indexOf(false);
+    if (invalid !== -1) { fields[invalid].focus(); return; }
+    if (!consentValid) { priceRequestForm.elements.consent.focus(); return; }
+    submitLead(priceRequestForm, message, 'price-request-section');
+  });
+  fields.forEach(field => field.addEventListener('input', () => {
+    message.hidden = true;
+    if (field.getAttribute('aria-invalid') === 'true') validate(field);
+  }));
+}
+
 const getPopupSubmitLabel = (ctaLabel) => {
   const label = ctaLabel.toLocaleLowerCase('vi').normalize('NFC');
   if (/thăm quan|tham quan|thực địa/.test(label)) return 'Đăng ký thăm quan dự án';
@@ -308,24 +339,30 @@ reducedMotion.addEventListener('change', ({ matches }) => {
 const mobileBar = document.querySelector('.mobile-conversion');
 const floatingPrice = document.querySelector('.floating-price');
 const mobileContact = mobileBar?.querySelector('.mobile-contact');
-let formVisible = false;
+const inlineLeadForms = [form, priceRequestForm].filter(Boolean);
+const visibleLeadForms = new Set();
 const syncMobileBar = () => {
-  const hidden = formVisible || !!form?.contains(document.activeElement);
+  const hidden = visibleLeadForms.size > 0 || inlineLeadForms.some(item => item.contains(document.activeElement));
   if (hidden && mobileContact) mobileContact.open = false;
   mobileBar?.classList.toggle('is-suppressed', hidden);
   if (mobileBar) mobileBar.inert = hidden;
   floatingPrice?.classList.toggle('is-suppressed', hidden);
+  document.querySelector('.floating-zalo')?.classList.toggle('is-suppressed', hidden);
 };
-if (mobileBar && form && 'IntersectionObserver' in window) {
-  new IntersectionObserver(([entry]) => {
-    formVisible = entry.isIntersecting;
+if ('IntersectionObserver' in window) {
+  const leadVisibility = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) visibleLeadForms.add(entry.target);
+      else visibleLeadForms.delete(entry.target);
+    });
     syncMobileBar();
-  }, { rootMargin: '0px 0px 96px 0px' }).observe(form);
+  }, { rootMargin: '0px 0px 96px 0px' });
+  inlineLeadForms.forEach(item => leadVisibility.observe(item));
 }
-if (mobileBar && form) {
-  form.addEventListener('focusin', syncMobileBar);
-  form.addEventListener('focusout', () => requestAnimationFrame(syncMobileBar));
-}
+inlineLeadForms.forEach(item => {
+  item.addEventListener('focusin', syncMobileBar);
+  item.addEventListener('focusout', () => requestAnimationFrame(syncMobileBar));
+});
 if (mobileContact) {
   document.addEventListener('click', event => {
     if (!mobileContact.contains(event.target)) mobileContact.open = false;
