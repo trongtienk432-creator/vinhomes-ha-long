@@ -7,7 +7,7 @@ const validateConsent = (form) => {
   return field.checked;
 };
 
-const LEAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyojIP5Zku5Lz811U1mbH0ED2RFnIo5THfy29iOX0wJr5ajKjLoEnwfvseed3k0eIRNIg/exec';
+const LEAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxN_h9M6zKXihEY4azIiLXPSKH8m9Amv8ZAd4kHca0P9fQ2ZZLiogSTLuQ9bgmA3sGAHw/exec';
 const leadRequests = new WeakMap();
 
 const submitLead = async (leadForm, message, source) => {
