@@ -7,7 +7,60 @@ const validateConsent = (form) => {
   return field.checked;
 };
 
-// Preview form: validate locally without transmitting personal information.
+const LEAD_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyojIP5Zku5Lz811U1mbH0ED2RFnIo5THfy29iOX0wJr5ajKjLoEnwfvseed3k0eIRNIg/exec';
+const leadRequests = new WeakMap();
+
+const submitLead = async (leadForm, message, source) => {
+  if (leadForm.getAttribute('aria-busy') === 'true') return;
+  const payload = new URLSearchParams(new FormData(leadForm));
+  payload.set('formSource', source);
+  payload.set('cta', leadForm.dataset.cta || 'Nhận bảng giá & tư vấn dòng tiền');
+  const fingerprint = payload.toString();
+  let request = leadRequests.get(leadForm);
+  if (!request || request.fingerprint !== fingerprint) {
+    request = { fingerprint, id: crypto.randomUUID(), sent: false };
+    leadRequests.set(leadForm, request);
+  }
+  message.hidden = false;
+  if (request.sent) {
+    message.textContent = 'MICC đã nhận đăng ký của Anh/Chị và sẽ liên hệ qua điện thoại/Zalo.';
+    return;
+  }
+  payload.set('requestId', request.id);
+  const button = leadForm.querySelector('button[type="submit"]');
+  const previousLabel = button.firstChild.textContent;
+  const controls = [...leadForm.elements].filter(control => !control.disabled);
+  controls.forEach(control => { control.disabled = true; });
+  leadForm.setAttribute('aria-busy', 'true');
+  button.firstChild.textContent = 'Đang gửi đăng ký… ';
+  message.textContent = 'Đang gửi thông tin, Anh/Chị vui lòng chờ…';
+  message.dataset.state = 'pending';
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 30000);
+  try {
+    const response = await fetch(LEAD_ENDPOINT, {
+      method: 'POST', body: payload, mode: 'cors', credentials: 'omit',
+      redirect: 'follow', signal: controller.signal
+    });
+    if (!response.ok) throw new Error('HTTP_ERROR');
+    const result = await response.json();
+    if (result.ok !== true) throw new Error('SUBMISSION_REJECTED');
+    request.sent = true;
+    message.dataset.state = 'success';
+    message.textContent = 'MICC đã nhận đăng ký của Anh/Chị và sẽ liên hệ qua điện thoại/Zalo.';
+  } catch (_) {
+    message.dataset.state = 'error';
+    message.textContent = 'Chưa xác nhận được đăng ký. Anh/Chị vui lòng thử lại hoặc gọi 086 260 8234 để được hỗ trợ.';
+  } finally {
+    clearTimeout(timeout);
+    controls.forEach(control => { control.disabled = false; });
+    leadForm.removeAttribute('aria-busy');
+    button.firstChild.textContent = previousLabel;
+  }
+};
+
+// Validate both forms before sending contact details.
+
 const form = document.querySelector('#lead-form');
 const status = document.querySelector('#form-status');
 if (form && status) {
@@ -30,8 +83,7 @@ if (form && status) {
     const firstInvalid = results.indexOf(false);
     if (firstInvalid !== -1) { fields[firstInvalid].focus(); return; }
     if (!consentValid) { form.elements.consent.focus(); return; }
-    status.hidden = false;
-    status.textContent = 'Thông tin chưa được gửi. Form đang ở chế độ xem trước; vui lòng gọi 086 260 8234 để nhận bảng giá và tư vấn.';
+    submitLead(form, status, 'landing-page');
   });
   fields.forEach(field => field.addEventListener('input', () => {
     status.hidden = true;
@@ -113,6 +165,13 @@ const setupConversionPopup = () => {
     return valid;
   };
   const openPopup = (sourceLink) => {
+    if (popupForm.getAttribute('aria-busy') === 'true') {
+      popup.hidden = false;
+      popupStatus.hidden = false;
+      document.body.classList.add('has-open-conversion');
+      closeButton.focus();
+      return;
+    }
     const labelCopy = sourceLink.cloneNode(true);
     labelCopy.querySelectorAll('[aria-hidden="true"], small').forEach(node => node.remove());
     const label = labelCopy.textContent.replace(/\s+/g, ' ').trim();
@@ -150,8 +209,7 @@ const setupConversionPopup = () => {
     const firstInvalid = results.indexOf(false);
     if (firstInvalid !== -1) { popupFields[firstInvalid].focus(); return; }
     if (!consentValid) { popupForm.elements.consent.focus(); return; }
-    popupStatus.hidden = false;
-    popupStatus.textContent = 'Thông tin chưa được gửi. Form đang ở chế độ xem trước; vui lòng gọi 086 260 8234 hoặc chat Zalo để nhận tư vấn ngay.';
+    submitLead(popupForm, popupStatus, 'popup');
   });
   popupFields.forEach(field => field.addEventListener('input', () => {
     popupStatus.hidden = true;

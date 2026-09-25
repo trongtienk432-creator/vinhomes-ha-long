@@ -902,3 +902,8 @@ body{padding-top:var(--header-height)}
   .site-header .header-hotline{flex-shrink:0}
   .site-header .menu-toggle{min-width:70px;flex-shrink:0;padding-inline:7px;gap:6px}
 }
+
+/* Registration request feedback. */
+form[aria-busy="true"] button[type=submit]{cursor:wait;opacity:.7}
+.form-status[data-state="success"]{border-left:3px solid #075f64}
+.form-status[data-state="error"]{border-left:3px solid #a52a2a;color:#822727}
