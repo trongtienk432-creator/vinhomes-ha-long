@@ -992,3 +992,16 @@ form[aria-busy="true"] button[type=submit]{cursor:wait;opacity:.7}
  .price-request-card .form-consent{margin-top:18px}
  .price-request-card button[type=submit]{margin-top:18px;min-height:54px}
 }
+
+/* Selected Ha Long motifs sit beside chapter headings, clear of the data. */
+.progress>.wrap>.batch-heading,.legal>.wrap>.batch-heading{position:relative;max-width:none;padding-right:clamp(260px,31%,440px)}
+.progress>.wrap>.batch-heading::after,.legal>.wrap>.batch-heading::after{content:'';position:absolute;right:0;top:34px;width:clamp(240px,29%,400px);height:190px;pointer-events:none;background-position:center;background-size:contain;background-repeat:no-repeat}
+.progress>.wrap>.batch-heading::after{background-image:url('assets/images/hoa-tiet/hoa-tiet-song-bien.png');opacity:.75}
+.legal>.wrap>.batch-heading::after{background-image:url('assets/images/hoa-tiet/hoa-tiet-hon-trong-mai-ha-long.png');opacity:.78;top:24px;width:clamp(240px,29%,400px)}
+@media(max-width:1000px){
+ .progress>.wrap>.batch-heading,.legal>.wrap>.batch-heading{padding-right:0}
+ .progress>.wrap>.batch-heading::after,.legal>.wrap>.batch-heading::after{top:-52px;right:0;width:180px;height:60px;opacity:.55}
+}
+@media(max-width:600px){
+ .progress>.wrap>.batch-heading::after,.legal>.wrap>.batch-heading::after{top:-44px;right:0;width:150px;height:50px;opacity:.55}
+}
