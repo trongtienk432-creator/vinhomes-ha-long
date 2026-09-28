@@ -152,7 +152,7 @@ const setupConversionPopup = () => {
         <details class="popup-disclaimer"><summary>Lưu ý về thông tin dự án</summary><p class="conversion-popup-note">Giá bán và chính sách trên trang mang tính tham khảo/dự kiến; thông tin chính thức áp dụng theo văn bản niêm yết của Chủ đầu tư tại từng thời điểm.</p></details>
         <a class="conversion-popup-hotline" href="tel:0862608234">Gọi hotline 086 260 8234</a>
       </div>
-      <form class="conversion-popup-form" aria-describedby="conversion-popup-context" novalidate>
+      <form method="post" class="conversion-popup-form" aria-describedby="conversion-popup-context" novalidate>
         <label for="popup-name">Họ và tên <span aria-hidden="true">*</span></label>
         <input id="popup-name" name="name" autocomplete="name" placeholder="Nhập họ và tên" required minlength="2" maxlength="100" aria-describedby="popup-name-error">
         <p class="field-error" id="popup-name-error" hidden></p>
@@ -170,7 +170,7 @@ const setupConversionPopup = () => {
           <option>Dinh thự</option>
           <option>Tìm hiểu tổng quan</option>
         </select>
-        <label class="form-consent"><input type="checkbox" name="consent" required aria-describedby="popup-consent-error"><span>Tôi đồng ý để MICC sử dụng thông tin trên nhằm liên hệ tư vấn qua điện thoại/Zalo theo <a href="https://chungcumasterioceancity.com/chinh-sach-bao-mat.html" target="_blank" rel="noopener">Chính sách bảo mật</a>.</span></label><p class="field-error" id="popup-consent-error" hidden></p>
+        <label class="form-consent"><input type="checkbox" name="consent" required aria-describedby="popup-consent-error"><span>Tôi đồng ý để MICC sử dụng thông tin trên nhằm liên hệ tư vấn qua điện thoại/Zalo theo <a href="/chinh-sach-bao-mat.html" target="_blank" rel="noopener">Chính sách bảo mật</a>.</span></label><p class="field-error" id="popup-consent-error" hidden></p>
         <button type="submit">Đăng ký tư vấn ngay <span aria-hidden="true">↗</span></button>
         <p class="form-status" role="status" hidden></p>
       </form>
@@ -599,55 +599,86 @@ setupGallery({
 });
 
 const setupImageLightbox = () => {
-  const imageLinks = [...document.querySelectorAll('.batch-media a, .overview-image-link')].filter((link) => /\.(jpe?g|png|webp|avif|gif)$/i.test(link.getAttribute('href') || ''));
+  const imageLinks = [...document.querySelectorAll('.batch-media a, .overview-image-link, .location-map-column a')].filter(link => /\.(jpe?g|png|webp|avif|gif)$/i.test(link.getAttribute('href') || ''));
   if (!imageLinks.length) return;
-
   const lightbox = document.createElement('div');
   lightbox.className = 'image-lightbox';
   lightbox.setAttribute('role', 'dialog');
   lightbox.setAttribute('aria-modal', 'true');
   lightbox.setAttribute('aria-label', 'Phóng to ảnh');
   lightbox.hidden = true;
-  lightbox.innerHTML = '<button class="image-lightbox-close" type="button" aria-label="Đóng ảnh phóng to">Đóng</button><img alt=""><p></p>';
+  lightbox.innerHTML = `<div class="image-lightbox-toolbar" role="group" aria-label="Điều khiển ảnh"><button type="button" data-zoom="out" aria-label="Thu nhỏ ảnh">−</button><output aria-live="polite">100%</output><button type="button" data-zoom="in" aria-label="Phóng to ảnh">+</button><button type="button" data-zoom="fit">Vừa màn hình</button><button class="image-lightbox-close" type="button" aria-label="Đóng ảnh phóng to">Đóng</button></div><div class="image-lightbox-viewport" tabindex="0" aria-label="Ảnh phóng to; cuộn để xem các vùng ảnh"><div class="image-lightbox-canvas"><img alt="" draggable="false"></div></div><p></p>`;
   document.body.append(lightbox);
-
-  const lightboxImage = lightbox.querySelector('img');
-  const lightboxCaption = lightbox.querySelector('p');
-  const closeButton = lightbox.querySelector('button');
-  let lastFocusedElement;
-
-  const openLightbox = (link) => {
-    const figure = link.closest('figure');
-    const sourceImage = figure?.querySelector('img') || link.querySelector('img');
-    lastFocusedElement = document.activeElement;
-    lightboxImage.src = link.href;
-    lightboxImage.alt = sourceImage?.alt || link.getAttribute('aria-label') || 'Ảnh dự án';
-    lightboxCaption.textContent = sourceImage?.alt || 'Ảnh dự án';
-    lightbox.hidden = false;
-    document.body.classList.add('has-open-lightbox');
-    closeButton.focus();
+  const img = lightbox.querySelector('img');
+  const viewport = lightbox.querySelector('.image-lightbox-viewport');
+  const caption = lightbox.querySelector('p');
+  const closeButton = lightbox.querySelector('.image-lightbox-close');
+  const zoomIn = lightbox.querySelector('[data-zoom=in]');
+  const zoomOut = lightbox.querySelector('[data-zoom=out]');
+  let lastFocusedElement, zoom = 1, fitWidth = 0, fitHeight = 0;
+  const renderZoom = (next) => {
+    const previous = zoom;
+    zoom = Math.max(1, Math.min(4, next));
+    const centerX = (viewport.scrollLeft + viewport.clientWidth / 2) / previous;
+    const centerY = (viewport.scrollTop + viewport.clientHeight / 2) / previous;
+    img.style.width = `${fitWidth * zoom}px`;
+    img.style.height = `${fitHeight * zoom}px`;
+    viewport.scrollLeft = zoom === 1 ? 0 : centerX * zoom - viewport.clientWidth / 2;
+    viewport.scrollTop = zoom === 1 ? 0 : centerY * zoom - viewport.clientHeight / 2;
+    lightbox.querySelector('output').textContent = `${Math.round(zoom * 100)}%`;
+    zoomOut.disabled = zoom === 1;
+    zoomIn.disabled = zoom === 4;
   };
-  const closeLightbox = () => {
+  const fit = () => {
+    if (lightbox.hidden || !img.naturalWidth) return;
+    const ratio = Math.min(viewport.clientWidth / img.naturalWidth, viewport.clientHeight / img.naturalHeight, 1);
+    fitWidth = img.naturalWidth * ratio;
+    fitHeight = img.naturalHeight * ratio;
+    renderZoom(1);
+  };
+  img.addEventListener('load', fit);
+  img.addEventListener('error', () => { caption.textContent = 'Không tải được ảnh. Vui lòng đóng và thử lại.'; });
+  const close = () => {
     lightbox.hidden = true;
-    lightboxImage.removeAttribute('src');
+    img.removeAttribute('src');
     document.body.classList.remove('has-open-lightbox');
     lastFocusedElement?.focus?.();
   };
-
-  imageLinks.forEach((link) => {
+  imageLinks.forEach(link => {
     link.removeAttribute('target');
     link.removeAttribute('rel');
-    link.addEventListener('click', (event) => {
+    link.addEventListener('click', event => {
       event.preventDefault();
-      openLightbox(link);
+      const source = link.closest('figure')?.querySelector('img') || link.querySelector('img');
+      lastFocusedElement = link;
+      zoom = 1;
+      img.style.width = img.style.height = '';
+      img.alt = source?.alt || 'Ảnh dự án';
+      caption.textContent = img.alt;
+      zoomIn.disabled = zoomOut.disabled = true;
+      lightbox.querySelector('output').textContent = '100%';
+      lightbox.hidden = false;
+      document.body.classList.add('has-open-lightbox');
+      img.src = link.href;
+      if (img.complete) fit();
+      closeButton.focus();
     });
   });
-  closeButton.addEventListener('click', closeLightbox);
-  lightbox.addEventListener('click', (event) => {
-    if (event.target === lightbox) closeLightbox();
-  });
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && !lightbox.hidden) closeLightbox();
+  zoomIn.addEventListener('click', () => renderZoom(zoom + .5));
+  zoomOut.addEventListener('click', () => renderZoom(zoom - .5));
+  lightbox.querySelector('[data-zoom=fit]').addEventListener('click', fit);
+  closeButton.addEventListener('click', close);
+  lightbox.addEventListener('click', event => { if (event.target === lightbox) close(); });
+  window.addEventListener('resize', fit);
+  document.addEventListener('keydown', event => {
+    if (lightbox.hidden) return;
+    if (event.key === 'Escape') close();
+    if (event.key === 'Tab') {
+      const focusable = [...lightbox.querySelectorAll('button:not(:disabled), [tabindex="0"]')];
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    }
   });
 };
 
@@ -734,3 +765,35 @@ const setupFloorplanSelector = () => {
   reducedMotion.addEventListener('change', ({ matches }) => { if (matches) settle(); });
 };
 setupFloorplanSelector();
+
+// Native disclosure supports click, touch and keyboard without changing anchor navigation.
+const productMenu = document.querySelector('.nav-products');
+if (productMenu) {
+  let productHoverTimer;
+  const hoverProducts = window.matchMedia('(min-width:1201px) and (hover:hover) and (pointer:fine)');
+  const closeProductMenu = () => { clearTimeout(productHoverTimer); productMenu.open = false; };
+  productMenu.addEventListener('pointerenter', () => {
+    clearTimeout(productHoverTimer);
+    if (hoverProducts.matches) productMenu.open = true;
+  });
+  productMenu.addEventListener('pointerleave', () => {
+    if (hoverProducts.matches) productHoverTimer = setTimeout(() => {
+      if (!productMenu.contains(document.activeElement)) closeProductMenu();
+    }, 180);
+  });
+  productMenu.addEventListener('focusout', () => {
+    setTimeout(() => {
+      if (!productMenu.contains(document.activeElement) && !productMenu.matches(':hover')) closeProductMenu();
+    }, 0);
+  });
+  productMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', closeProductMenu));
+  document.addEventListener('click', event => {
+    if (!productMenu.contains(event.target)) closeProductMenu();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && productMenu.open) {
+      closeProductMenu();
+      if (window.matchMedia('(min-width:1201px)').matches) productMenu.querySelector('summary').focus();
+    }
+  });
+}

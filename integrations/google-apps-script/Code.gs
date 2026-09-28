@@ -71,7 +71,7 @@ function doPost(e) {
       'CTA khách đã chọn: ' + (text_(data.cta, 240) || 'Đăng ký tư vấn'),
       'Vị trí form: ' + (text_(data.formSource, 80) || 'Landing page'),
       'Đồng ý MICC liên hệ qua điện thoại/Zalo: Có',
-      'Chính sách: https://chungcumasterioceancity.com/chinh-sach-bao-mat.html',
+      'Chính sách: https://vinhomes-halong.com/chinh-sach-bao-mat.html',
       '',
       'Thông báo đăng ký từ website. Vui lòng liên hệ khách hàng để tư vấn.'
     ].join('\n');

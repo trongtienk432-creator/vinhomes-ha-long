@@ -1140,3 +1140,53 @@ form[aria-busy="true"] button[type=submit]{cursor:wait;opacity:.7}
  .apartment-design-disclaimer{font-size:11px;margin-top:24px}
 }
 @media(prefers-reduced-motion:reduce){.apartment-design-image img{transition:none;transform:none!important}}
+
+/* Hero disclosure and product navigation. */
+.hero .hero-micc-note{max-width:580px;margin:16px 0 0;font-size:12px;line-height:1.65;color:rgba(255,255,255,.82)}
+.hero-micc-note strong{font-weight:600}
+.nav-products{position:relative;align-self:center}
+.nav-products summary{display:flex;align-items:center;gap:5px;cursor:pointer;list-style:none;font-size:13px;font-weight:600;white-space:nowrap}
+.nav-products summary::-webkit-details-marker{display:none}
+.nav-products summary>span{font-size:16px;line-height:1;transition:transform 180ms}
+.nav-products[open] summary>span{transform:rotate(180deg)}
+.nav-products-menu{position:absolute;top:calc(100% + 16px);left:-16px;min-width:165px;padding:8px 16px;background:var(--sea-ink);border:1px solid #ffffff30;border-radius:4px;box-shadow:0 12px 28px #002b3033}
+.site-header .nav-products-menu a{display:block;padding:12px 0;white-space:nowrap}
+.nav-products summary:focus-visible{outline:2px solid var(--color-secondary);outline-offset:5px}
+.header-hotline svg{animation:hotline-ring 2.8s ease-in-out infinite;transform-origin:center}
+@keyframes hotline-ring{0%,55%,100%{transform:rotate(0) scale(1)}60%,72%,84%{transform:rotate(-22deg) scale(1.12)}66%,78%,90%{transform:rotate(22deg) scale(1.12)}95%{transform:rotate(0) scale(1)}}
+@media(min-width:1201px) and (max-width:1600px){.nav-products summary{font-size:14px}}
+@media(max-width:1200px){.nav-products{align-self:start}.nav-products summary{min-height:48px;padding:12px 0;border-bottom:1px solid #ffffff20;font-size:16px}.nav-products-menu{position:static;min-width:0;padding:0 0 0 14px;border:0;border-radius:0;box-shadow:none;background:transparent}.site-header .nav-products-menu a{font-size:14px;color:var(--bg-warm)}}
+@media(max-width:600px){.nav-products summary{font-size:14px}.hero .hero-micc-note{font-size:11px;margin-top:14px;max-width:340px}}
+@media(prefers-reduced-motion:reduce){.header-hotline svg{animation:none}.nav-products summary>span{transition:none}}
+
+/* Scoped hero refinements: champagne highlights and a restrained glass badge. */
+.hero h1{color:#fff}
+.hero h1 span{color:#d8c27a}
+@supports ((background-clip:text) or (-webkit-background-clip:text)){
+  .hero h1 span{background:linear-gradient(110deg,#e4d49d 0%,#d8c27a 58%,#d2bc78 100%);background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+}
+.hero .eyebrow{color:#d8c27a;letter-spacing:.19em}
+.hero .eyebrow>span{background:#d8c27a}
+.hero .esg{color:#eedfae;background:rgba(255,255,255,.06);border:1px solid rgba(216,194,122,.45);border-radius:6px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:inset 0 1px 0 #ffffff10}
+.hero .description{color:rgba(255,255,255,.88)}
+.hero .intro p{color:rgba(255,255,255,.86)}
+.hero .primary-cta{background:#087e86;color:#fff;border:1px solid #77c0bd88;border-radius:5px;font-weight:600;letter-spacing:.035em;box-shadow:0 6px 20px #002c3026;transition:background 180ms,transform 180ms,border-color 180ms}
+.hero .primary-cta:focus-visible{outline:2px solid #d8c27a;outline-offset:4px}
+@media(hover:hover) and (pointer:fine){.hero .primary-cta:hover{background:#098992;border-color:#d8c27a99;transform:translateY(-2px)}}
+.site-header .header-hotline{animation:hotline-attention 2.8s ease-in-out infinite}
+@keyframes hotline-attention{0%,55%,100%{transform:scale(1);box-shadow:0 0 0 0 #d8c27a00}68%{transform:scale(1.035);box-shadow:0 0 0 5px #d8c27a30}90%{transform:scale(1);box-shadow:0 0 0 9px #d8c27a00}}
+@media(max-width:600px){.hero .eyebrow{letter-spacing:.12em;font-size:11px}.hero .primary-cta{letter-spacing:.02em}}
+@media(prefers-reduced-motion:reduce){.site-header .header-hotline,.header-hotline svg{animation:none}.hero .primary-cta{transition:none;transform:none}}
+
+/* Zoom uses an overflow viewport so touch and keyboard scrolling reach the whole image. */
+.image-lightbox{grid-template-rows:auto minmax(0,1fr) auto;gap:12px;padding:16px clamp(12px,3vw,40px);overscroll-behavior:contain}
+.image-lightbox-toolbar{display:flex;justify-content:center;align-items:center;gap:8px;width:100%;flex-wrap:wrap}
+.image-lightbox-toolbar button{position:static;min-width:44px;min-height:44px;padding:8px 12px;border:1px solid #ffffff66;border-radius:4px;background:#164f53;color:#fff;cursor:pointer;font:inherit;font-size:14px}
+.image-lightbox-toolbar button:disabled{opacity:.4;cursor:default}
+.image-lightbox-toolbar output{min-width:44px;text-align:center;color:#fff;font-size:12px}
+.image-lightbox-toolbar button:focus-visible,.image-lightbox-viewport:focus-visible{outline:2px solid #d8c27a;outline-offset:2px}
+.image-lightbox-viewport{width:100%;height:100%;overflow:auto;overscroll-behavior:contain;min-height:0;min-width:0}
+.image-lightbox-canvas{display:flex;align-items:center;justify-content:center;width:max-content;height:max-content;min-width:100%;min-height:100%}
+.image-lightbox .image-lightbox-canvas img{display:block;max-width:none;max-height:none;flex:none;object-fit:contain}
+.image-lightbox>p{margin:0;font-size:12px;max-height:54px;overflow:auto}
+@media(max-width:380px){.image-lightbox-toolbar{gap:4px}.image-lightbox-toolbar button{padding:8px;font-size:12px}}
