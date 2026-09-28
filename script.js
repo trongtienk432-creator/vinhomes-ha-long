@@ -205,11 +205,12 @@ const setupConversionPopup = () => {
     }
     const labelCopy = sourceLink.cloneNode(true);
     labelCopy.querySelectorAll('[aria-hidden="true"], small').forEach(node => node.remove());
-    const label = labelCopy.textContent.replace(/\s+/g, ' ').trim();
+    const label = sourceLink.dataset.popupTitle || labelCopy.textContent.replace(/\s+/g, ' ').trim();
     lastFocusedElement = document.activeElement;
     popupTitle.textContent = label || 'Đăng ký nhận tư vấn';
     popupForm.dataset.cta = label;
-    popupSubmitText.textContent = `${getPopupSubmitLabel(label)} `;
+    popupSubmitText.textContent = `${sourceLink.dataset.popupSubmitLabel || getPopupSubmitLabel(label)} `;
+    if (sourceLink.dataset.popupProduct) popupForm.elements.product.value = sourceLink.dataset.popupProduct;
     popupContext.textContent = 'Để lại thông tin để MICC hỗ trợ Anh/Chị';
     popupStatus.hidden = true;
     popup.hidden = false;

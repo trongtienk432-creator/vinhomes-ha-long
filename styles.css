@@ -1005,3 +1005,138 @@ form[aria-busy="true"] button[type=submit]{cursor:wait;opacity:.7}
 @media(max-width:600px){
  .progress>.wrap>.batch-heading::after,.legal>.wrap>.batch-heading::after{top:-44px;right:0;width:150px;height:50px;opacity:.55}
 }
+
+/* The Sunrise Bay — image-led apartment overview. All styles scoped to this chapter. */
+.sunrise-overview{padding-block:var(--space-chapter);background:var(--bg-light);color:var(--sea-ink)}
+.sunrise-heading{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:32px;align-items:end;margin-bottom:40px}
+.sunrise-heading .section-kicker,.sunrise-pricing .section-kicker{font-size:11px;letter-spacing:.14em;margin-bottom:20px}
+.sunrise-overview .section-kicker>span{height:1px;width:24px;background:var(--champagne)}
+.sunrise-heading h2{font-family:var(--font-heading);font-size:clamp(32px,4vw,58px);line-height:1.16;letter-spacing:-.025em;margin:0;font-weight:500}
+.sunrise-heading>p{max-width:40ch;margin:0 0 4px;color:var(--text-muted);font-size:17px;line-height:1.7}
+.sunrise-visual{margin:0}
+.sunrise-visual>a{display:block;border:0}
+.sunrise-visual img{display:block;width:100%;height:auto;object-fit:contain}
+.sunrise-visual figcaption{display:flex;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;padding-top:12px;font-size:12px;color:var(--text-muted)}
+.sunrise-visual figcaption a{color:var(--sea-deep);text-underline-offset:4px}
+.sunrise-highlights{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:40px 0 0;padding:32px 0;border-block:1px solid var(--line);gap:32px}
+.sunrise-highlights>div{padding-left:32px;border-left:1px solid var(--line)}
+.sunrise-highlights>div:first-child{border:0;padding-left:0}
+.sunrise-highlights dd{margin:0 0 10px;font-size:clamp(38px,4.5vw,64px);line-height:1.1;letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+.sunrise-highlights dd span{font-size:15px;letter-spacing:.04em;color:var(--text-muted)}
+.sunrise-highlights dt{font-size:14px;color:var(--text-muted)}
+.sunrise-residences{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,88px);padding-block:48px 56px}
+.sunrise-collections>div{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:20px 0;border-bottom:1px solid var(--line)}
+.sunrise-collections>div:first-child{padding-top:0}
+.sunrise-collections h3{font-size:clamp(20px,2vw,28px);margin:0;line-height:1.3}
+.sunrise-collections p{margin:0;color:var(--text-muted);font-size:14px;white-space:nowrap}
+.sunrise-snapshot .batch-label{color:var(--text-muted);margin:0 0 16px}
+.sunrise-snapshot h3{font-size:clamp(23px,2.3vw,32px);margin:0 0 20px;line-height:1.35}
+.sunrise-snapshot ul{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:10px 24px;font-size:15px;color:var(--text-muted)}
+.sunrise-pricing{background:var(--bg-warm);padding:36px 40px 32px;border-top:1px solid var(--champagne)}
+.sunrise-prices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;margin:28px 0 32px}
+.sunrise-prices dt{font-size:16px;margin-bottom:10px;color:var(--text-muted)}
+.sunrise-prices dd{margin:0;font-size:clamp(28px,3vw,42px);font-variant-numeric:tabular-nums;letter-spacing:-.03em;line-height:1.3}
+.sunrise-prices dd span{font-size:16px;letter-spacing:0}
+.sunrise-policy{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;padding-block:24px;border-top:1px solid var(--line)}
+.sunrise-policy p{margin:0;font-size:14px;color:var(--text-muted);line-height:1.6}
+.sunrise-policy strong{display:block;font-size:21px;font-weight:500;color:var(--sea-ink);margin:4px 0}
+.sunrise-policy small{display:block;font-size:11px}
+.sunrise-disclaimer{max-width:90ch;font-size:12px;line-height:1.65;color:var(--text-muted);margin:0 0 24px}
+.sunrise-action{border-top:1px solid var(--line);padding-top:24px;display:flex;justify-content:space-between;align-items:center;gap:24px}
+.sunrise-action p{max-width:44ch;font-size:14px;color:var(--text-muted);margin:0}
+.sunrise-action .values-cta{margin:0;min-height:54px;font-size:13px;letter-spacing:.04em}
+@media(max-width:900px){
+ .sunrise-heading{grid-template-columns:1fr;gap:20px}
+ .sunrise-heading>p{max-width:none}
+ .sunrise-residences{gap:32px}
+ .sunrise-pricing{padding:28px}
+ .sunrise-action{align-items:flex-start;flex-direction:column}
+}
+@media(max-width:600px){
+ .sunrise-heading{gap:16px;margin-bottom:28px}
+ .sunrise-heading h2{font-size:clamp(28px,7.5vw,40px)}
+ .sunrise-heading .section-kicker{font-size:10px;margin-bottom:16px}
+ .sunrise-heading>p{font-size:15px}
+ .sunrise-visual figcaption{font-size:11px;gap:6px}
+ .sunrise-highlights{gap:12px;padding-block:24px;margin-top:28px}
+ .sunrise-highlights>div{padding-left:12px}
+ .sunrise-highlights dd{font-size:clamp(28px,8vw,38px);margin-bottom:8px}
+ .sunrise-highlights dd span{display:block;font-size:11px;margin-top:8px}
+ .sunrise-highlights dt{font-size:11px;line-height:1.5}
+ .sunrise-residences{grid-template-columns:1fr;gap:28px;padding-block:28px 36px}
+ .sunrise-collections h3{font-size:23px}
+ .sunrise-collections p{font-size:13px}
+ .sunrise-snapshot h3{font-size:25px;margin-bottom:16px}
+ .sunrise-snapshot ul{font-size:13px;gap:10px 16px}
+ .sunrise-pricing{padding:24px 20px}
+ .sunrise-pricing .section-kicker{font-size:10px;letter-spacing:.1em;margin-bottom:20px}
+ .sunrise-prices{grid-template-columns:1fr;gap:0;margin:0 0 24px}
+ .sunrise-prices>div{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:16px 0;border-bottom:1px solid var(--line)}
+ .sunrise-prices>div:first-child{padding-top:0}
+ .sunrise-prices dt{font-size:14px;margin:0}
+ .sunrise-prices dd{font-size:28px;white-space:nowrap}
+ .sunrise-prices dd span{font-size:14px}
+ .sunrise-policy{grid-template-columns:1fr;gap:16px;border-top:0;padding:0 0 24px}
+ .sunrise-policy p{position:relative;padding-left:14px;border-left:1px solid var(--champagne);font-size:13px}
+ .sunrise-policy strong{display:inline;font-size:17px;margin-left:5px}
+ .sunrise-policy small{font-size:10px;margin-top:3px}
+ .sunrise-disclaimer{font-size:11px}
+ .sunrise-action{gap:16px;padding-top:20px}
+ .sunrise-action p{font-size:13px}
+ .sunrise-action .values-cta{width:100%;font-size:12px;letter-spacing:0;gap:12px;padding-inline:12px}
+}
+
+/* Apartment layouts: equal visual stages and directly comparable specifications. */
+.apartment-design{background:var(--bg-light);color:var(--sea-ink);padding-block:var(--space-editorial);border-top:1px solid var(--line)}
+.apartment-design-heading{margin-bottom:40px}
+.apartment-design-heading .section-kicker{font-size:11px;letter-spacing:.14em;margin-bottom:18px}
+.apartment-design-heading .section-kicker>span{width:24px;height:1px;background:var(--champagne)}
+.apartment-design-heading h2{font-size:clamp(28px,3.5vw,48px);margin:0 0 16px;line-height:1.2}
+.apartment-design-heading>p:last-child{font-size:16px;color:var(--text-muted);margin:0}
+.apartment-design-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,3vw,44px)}
+.apartment-design-unit{min-width:0;display:flex;flex-direction:column}
+.apartment-design-image{margin:0 0 24px;background:transparent}
+.apartment-design-image>a{display:flex;align-items:center;justify-content:center;aspect-ratio:1/1;overflow:hidden;background:var(--bg-warm);border:0}
+.apartment-design-image img{display:block;width:100%;height:100%;object-fit:contain;padding:12px;transition:transform 350ms var(--ease-editorial)}
+.apartment-design-image figcaption{display:flex;justify-content:space-between;gap:12px;font-size:11px;color:var(--text-muted);padding-top:10px;line-height:1.5}
+.apartment-design-unit h3{font-size:28px;font-weight:500;line-height:1.25;margin:0 0 12px}
+.apartment-design-area{font-size:clamp(32px,3.1vw,44px);font-variant-numeric:tabular-nums;letter-spacing:-.025em;line-height:1.15;margin:0 0 24px}
+.apartment-design-area>span{font-size:20px;letter-spacing:0}
+.apartment-design-area>small{display:block;font-size:12px;color:var(--text-muted);letter-spacing:0;margin-top:8px}
+.apartment-design-specs{margin:0;border-top:1px solid var(--line)}
+.apartment-design-specs>div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:1px solid var(--line);padding:10px 0;font-size:14px;line-height:1.5}
+.apartment-design-specs dt{color:var(--text-muted)}
+.apartment-design-specs dd{margin:0;text-align:right}
+.apartment-design-price{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:24px 0}
+.apartment-design-price>span{font-size:12px;color:var(--text-muted)}
+.apartment-design-price strong{font-size:26px;font-weight:500;line-height:1.3;font-variant-numeric:tabular-nums}
+.apartment-design-price small{font-size:14px}
+.apartment-design-unit .apartment-design-cta{margin-top:auto;width:100%;min-height:52px;padding:12px;font-size:12px;letter-spacing:0;gap:12px;justify-content:space-between;background:transparent;color:var(--sea-deep);border:1px solid var(--sea-deep);border-radius:0}
+.apartment-design-unit .apartment-design-cta>span{font-size:22px;color:var(--sea-deep)}
+.apartment-design-disclaimer{font-size:12px;color:var(--text-muted);line-height:1.6;margin:28px 0 0;padding-top:20px;border-top:1px solid var(--champagne)}
+@media(hover:hover) and (pointer:fine){
+ .apartment-design-image>a:hover img{transform:scale(1.025)}
+ .apartment-design-unit .apartment-design-cta:hover{background:var(--sea-deep);color:var(--bg-light)}
+ .apartment-design-unit .apartment-design-cta:hover>span{color:var(--champagne)}
+}
+@media(max-width:900px) and (min-width:761px){
+ .apartment-design-grid{gap:20px}
+ .apartment-design-unit .apartment-design-cta{font-size:10px;gap:6px;padding-inline:8px}
+ .apartment-design-price{align-items:flex-start;flex-direction:column;gap:4px}
+}
+@media(max-width:760px){
+ .apartment-design-heading{margin-bottom:28px}
+ .apartment-design-heading h2{font-size:clamp(26px,6.8vw,36px)}
+ .apartment-design-heading>p:last-child{font-size:15px}
+ .apartment-design-grid{grid-template-columns:1fr;gap:36px}
+ .apartment-design-unit+.apartment-design-unit{padding-top:28px;border-top:1px solid var(--champagne)}
+ .apartment-design-image{margin-bottom:18px}
+ .apartment-design-image>a{aspect-ratio:auto;height:clamp(250px,78vw,360px)}
+ .apartment-design-image img{padding:8px}
+ .apartment-design-unit h3{font-size:25px;margin-bottom:8px}
+ .apartment-design-area{font-size:34px;margin-bottom:18px}
+ .apartment-design-specs>div{padding-block:8px;font-size:13px}
+ .apartment-design-price{margin:18px 0}
+ .apartment-design-disclaimer{font-size:11px;margin-top:24px}
+}
+@media(prefers-reduced-motion:reduce){.apartment-design-image img{transition:none;transform:none!important}}
