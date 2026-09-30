@@ -1225,3 +1225,14 @@ form[aria-busy="true"] button[type=submit]{cursor:wait;opacity:.7}
 .sunrise-visual.amenity-gallery>a{aspect-ratio:16/9;background:var(--bg-warm)}
 .sunrise-visual.amenity-gallery>a img{width:100%;height:100%;object-fit:contain}
 @media(max-width:760px){.products .batch-plan-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Paired project CTAs with a distinct Zalo contact action. */
+.section-cta-pair{display:flex;align-items:stretch;justify-content:flex-end;flex-wrap:wrap;gap:12px;flex-shrink:0;max-width:100%}
+.section-cta-pair .section-zalo-cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:12px 20px;border:1px solid #1681df;border-radius:4px;background:#fff;color:#0866b6;font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap;transition:background 180ms,transform 180ms;animation:section-zalo-pulse 3.6s ease-out infinite}
+.section-zalo-cta img{display:block;width:28px;height:28px;object-fit:contain;flex:none}
+@keyframes section-zalo-pulse{0%,55%,100%{box-shadow:0 0 0 0 #1681df00}65%{box-shadow:0 0 0 3px #1681df30}85%{box-shadow:0 0 0 8px #1681df00}}
+.section-zalo-cta:focus-visible{outline:2px solid #1681df;outline-offset:4px}
+@media(hover:hover){.section-cta-pair .section-zalo-cta:hover{background:#eaf5ff;transform:translateY(-2px)}}
+@media(max-width:1200px){.section-cta-pair{justify-content:flex-start;flex-shrink:1}}
+@media(max-width:600px){.section-cta-pair{width:100%;flex-direction:column;gap:12px}.section-cta-pair>a{width:100%;justify-content:center;text-align:center}.section-cta-pair .overview-cta{white-space:normal}}
+@media(prefers-reduced-motion:reduce){.section-cta-pair .section-zalo-cta{animation:none;transition:none;transform:none}}
