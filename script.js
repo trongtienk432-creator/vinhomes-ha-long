@@ -598,6 +598,15 @@ setupGallery({
   ]
 });
 
+setupGallery({
+  root: document.querySelector('.sunrise-visual'),
+  images: [
+    ['assets/images/tong-quan-chung-cu-vin-ha-long.webp', 'Tổng quan The Sunrise Bay · Phối cảnh minh họa'],
+    ['assets/images/chung cu/phoi-canh-chung-cu-vin-ha-long-xanh.webp', 'Phối cảnh chung cư Vinhomes Hạ Long · Hình ảnh minh họa'],
+    ['assets/images/chung cu/tien-ich-chung-cu-vin-ha-long-xanh.webp', 'Tiện ích chung cư Vinhomes Hạ Long · Hình ảnh minh họa']
+  ]
+});
+
 const setupImageLightbox = () => {
   const imageLinks = [...document.querySelectorAll('.batch-media a, .overview-image-link, .location-map-column a')].filter(link => /\.(jpe?g|png|webp|avif|gif)$/i.test(link.getAttribute('href') || ''));
   if (!imageLinks.length) return;

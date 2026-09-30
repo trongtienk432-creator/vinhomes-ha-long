@@ -1190,3 +1190,38 @@ form[aria-busy="true"] button[type=submit]{cursor:wait;opacity:.7}
 .image-lightbox .image-lightbox-canvas img{display:block;max-width:none;max-height:none;flex:none;object-fit:contain}
 .image-lightbox>p{margin:0;font-size:12px;max-height:54px;overflow:auto}
 @media(max-width:380px){.image-lightbox-toolbar{gap:4px}.image-lightbox-toolbar button{padding:8px;font-size:12px}}
+
+/* Low-rise catalogue: numbered chapters, landscape images and emerald footers. */
+.lowrise-products{margin-block:64px}
+.lowrise-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.lowrise-unit{min-width:0;display:flex;flex-direction:column;border-top:1px solid var(--champagne)}
+.lowrise-heading{display:flex;align-items:center;gap:16px;padding:22px 0}
+.lowrise-index{font-family:Georgia,serif;font-size:44px;line-height:1;color:#ad9256;font-style:italic}
+.lowrise-products .lowrise-heading h3{font-size:clamp(23px,2vw,29px);line-height:1.25;margin:0;font-weight:500}
+.lowrise-products .lowrise-image{margin:0}
+.lowrise-image>a{display:block;aspect-ratio:3/2;overflow:hidden}
+.lowrise-image img{display:block;width:100%;height:100%;object-fit:cover;transition:transform 300ms ease}
+.lowrise-image figcaption{display:flex;justify-content:space-between;gap:8px;font-size:11px;padding:10px 0;color:var(--text-muted)}
+.lowrise-products .lowrise-area{display:flex;align-items:baseline;gap:6px;margin:14px 0 20px;font-size:clamp(25px,2.5vw,34px);line-height:1.3;font-variant-numeric:tabular-nums}
+.lowrise-area>span{font-size:17px}.lowrise-area>small{margin-left:auto;font-size:11px;color:var(--text-muted)}
+.lowrise-specs{display:grid;grid-template-columns:1fr 1fr;gap:18px 16px;margin:0 0 24px;padding-top:18px;border-top:1px solid var(--line)}
+.lowrise-specs>div:last-child{grid-column:1/-1;min-height:68px}
+.lowrise-specs dt{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.lowrise-specs dd{margin:0;font-size:15px;line-height:1.6}
+.lowrise-footer{margin-top:auto;padding:22px;background:var(--sea-ink);color:var(--bg-light)}
+.lowrise-price{display:flex;flex-direction:column;gap:4px;min-height:107px}
+.lowrise-price>span{font-size:11px;color:#d8c27a;margin-bottom:5px;letter-spacing:.05em}
+.lowrise-price strong{font-size:27px;font-weight:500;line-height:1.35;font-variant-numeric:tabular-nums}
+.lowrise-price small{font-size:13px;color:#ffffffcc}
+.lowrise-products .lowrise-cta{width:100%;display:flex;justify-content:space-between;gap:12px;min-height:48px;padding:14px 0 0;margin-top:14px;border:0;border-top:1px solid #d8c27a55;border-radius:0;background:transparent;color:#f0dfaa;font-size:11px;letter-spacing:.025em;box-shadow:none}
+.lowrise-cta>span{font-size:23px}
+.lowrise-products .lowrise-disclaimer{font-size:12px;line-height:1.6;color:var(--text-muted);margin:22px 0 0}
+@media(hover:hover) and (pointer:fine){.lowrise-image>a:hover img{transform:scale(1.025)}.lowrise-products .lowrise-cta:hover{color:#fff;background:transparent}}
+@media(max-width:1000px) and (min-width:761px){.lowrise-grid{gap:18px}.lowrise-heading{gap:10px}.lowrise-index{font-size:34px}.lowrise-footer{padding:16px}.lowrise-products .lowrise-area{flex-wrap:wrap}.lowrise-area>small{width:100%;margin-left:0}.lowrise-specs dd{font-size:14px}.lowrise-price strong{font-size:24px}}
+@media(max-width:760px){.lowrise-products{margin-block:40px}.lowrise-grid{grid-template-columns:1fr;gap:36px}.lowrise-heading{padding:18px 0}.lowrise-products .lowrise-heading h3{font-size:26px}.lowrise-image>a{aspect-ratio:3/2}.lowrise-specs>div:last-child{min-height:0}.lowrise-price{min-height:0}.lowrise-footer{padding:20px}.lowrise-products .lowrise-area{font-size:30px}.lowrise-products .lowrise-disclaimer{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.lowrise-image img{transition:none;transform:none!important}}
+
+.products .batch-plan-tabs{grid-template-columns:repeat(4,minmax(0,1fr))}
+.sunrise-visual.amenity-gallery>a{aspect-ratio:16/9;background:var(--bg-warm)}
+.sunrise-visual.amenity-gallery>a img{width:100%;height:100%;object-fit:contain}
+@media(max-width:760px){.products .batch-plan-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
