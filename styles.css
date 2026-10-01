@@ -1236,3 +1236,9 @@ form[aria-busy="true"] button[type=submit]{cursor:wait;opacity:.7}
 @media(max-width:1200px){.section-cta-pair{justify-content:flex-start;flex-shrink:1}}
 @media(max-width:600px){.section-cta-pair{width:100%;flex-direction:column;gap:12px}.section-cta-pair>a{width:100%;justify-content:center;text-align:center}.section-cta-pair .overview-cta{white-space:normal}}
 @media(prefers-reduced-motion:reduce){.section-cta-pair .section-zalo-cta{animation:none;transition:none;transform:none}}
+
+/* Secondary model-room visit beside the primary site visit. */
+#tien-do .progress-visit-actions{flex-shrink:1}
+#tien-do .model-visit-cta{background:transparent;color:var(--sea-deep);border:1px solid var(--line);box-shadow:none;font-weight:500}
+#tien-do .model-visit-cta:hover{background:rgba(3,47,51,.04);border-color:var(--sea-deep)}
+#tien-do .model-visit-cta:focus-visible{outline:2px solid var(--sea-deep);outline-offset:4px}
